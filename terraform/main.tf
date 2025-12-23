@@ -15,7 +15,7 @@ resource "aws_security_group" "ssh_access" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"] # or restrict to your IP for security
+    cidr_blocks = ["0.0.0.0/0"] # restrict to your IP for security
   }
 
   egress {
