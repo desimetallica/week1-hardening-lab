@@ -56,6 +56,7 @@
 
     - name: Set firewalld default zone target to DROP
       firewalld:
+        state: enabled
         zone: public
         target: DROP
         permanent: yes

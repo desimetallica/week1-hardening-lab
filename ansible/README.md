@@ -2,6 +2,12 @@
 
 This folder contains an Ansible playbook for hardening your hosts.
 
+
+## Playbooks
+
+- `host_hardening.yml`: Main playbook to apply security hardening to hosts.
+- `verify_host_hardening.yml`: Playbook to verify that all hardening steps have been correctly applied.
+
 ## Usage Instructions
 
 1. **Prepare your inventory:**
@@ -19,11 +25,26 @@ This folder contains an Ansible playbook for hardening your hosts.
    - `-i hosts` specifies the inventory file.
    - `host_hardening.yml` is the playbook file.
    - `-v` enables verbose output.
-   - `--ask-vault-pass` prompts for the vault password if encrypted variables are used.
-   - `--ask-become-pass` prompts for the sudo password if privilege escalation is required.
+   - `--ask-vault-pass` prompts for the vault password if encrypted variables are used. 
+   - `--ask-become-pass` prompts for the sudo password if privilege escalation is required (vault var: ec2_user_password).
 
-4. **Customize as needed:**
-   - You can modify `host_hardening.yml` to suit your environment or add roles and tasks as needed.
+
+4. **Verify the hardening:**
+   - After running the main playbook, you can verify the configuration and security settings:
+     ```sh
+     ansible-playbook -i hosts verify_host_hardening.yml
+     ```
+   - This playbook checks:
+     - User and password setup (ec2-user, root, sysadmin)
+     - Firewall status and rules (firewalld or UFW)
+     - SSH configuration (root login and password authentication)
+     - Fail2Ban installation and configuration
+     - Existence of backup `.tar.gz` files in `/root/`
+     - Sudoers configuration for ec2-user (Amazon Linux)
+   - The results will be displayed at the end of the playbook run for review.
+
+5. **Customize as needed:**
+   - You can modify `host_hardening.yml` or `verify_host_hardening.yml` to suit your environment or add roles and tasks as needed.
 
 ## Additional Notes
 - Ensure Ansible is installed on your control machine.
